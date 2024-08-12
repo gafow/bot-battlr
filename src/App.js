@@ -18,7 +18,7 @@ function App() {
   };
 
   const discharge = (id) => {
-    fetch(`http://localhost:3000/bots${id}`, {
+    fetch(`https://bank-of-flatiron-saver.vercel.app/bots/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +27,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3000/bots")
+    fetch("https://bank-of-flatiron-saver.vercel.app/bots")
       .then((response) => response.json())
       .then((data) => setData(data));
   }, []);
