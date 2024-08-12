@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import YourBotArmy from "./components/YourBotArmy";
+import BotCollection from "./components/BotCollection";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [data, setData] = useState([]);
+  const [myBots, setMybots] = useState([]);
+
+  const addBot = (bot) => {
+    setMybots([...myBots, bot]);
+  };
+
+  const removeBot = (id) => {
+    const result = myBots.filter((bot) => bot.id !== id);
+    setMybots(result);
+  };
+
+  const discharge = (id) => {
+    fetch(`http://localhost:3000/bots${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => response.json());
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:3000/bots")
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="heading">My Bot Army</h1>
+      <YourBotArmy myBots={myBots} removeBot={removeBot} />
+      <h1 className="heading">Bot collection</h1>
+      <BotCollection data={data} addBot={addBot} discharge={discharge} />
     </div>
   );
 }
